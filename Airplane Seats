@@ -1,0 +1,215 @@
+#include <iostream>
+#include <string>
+#include <vector>
+// FIXME include vector library
+
+using namespace std;
+
+//Function displays menu options
+void DisplayMenu()
+{
+   cout << "Menu options:" << endl << "1. Display All Seats Status:" << endl;
+   cout << "2. Total Number of Available Seats:" << endl << "3. Display Available Seats: " << endl; 
+   cout << "4. Book Seat:" << endl << "5. Cancel Seat:" << endl << "6. Change Seat:" << endl;
+   cout << "7. Quit:" << endl << endl << "Please select an option: " << endl;
+}
+
+//Function should show all seats and seat status where a 0 marks the seat status as available and an
+//1 marks the seat status as occupied.
+void DisplayAllSeatsStatus(const vector<string> &seats, const vector<bool> &status)
+{
+   cout << "Seat\tStatus" << endl;
+   for(unsigned int i = 0; i < seats.size(); ++i)
+   {
+      cout << seats.at(i) << '\t' << status.at(i) << endl;
+   }
+}
+
+//Function should show the number of seats not currently booked
+int TotalNumberOfAvailableSeats(const vector<bool> &status)
+{
+   int numSeatsAvailable = 0;
+   for(unsigned int i = 0; i < status.size(); ++i)
+   {
+      if(status.at(i) == false)
+      {
+         ++numSeatsAvailable;
+      }
+   }
+   return numSeatsAvailable;
+}
+
+//Function display which seats are currently available
+void DisplayAvailableSeats(const vector<string> &seats, const vector<bool> &status)
+{
+   cout << "Available seats:" << endl;
+   for(unsigned int i = 0; i < status.size(); ++i)
+   {
+      if(status.at(i) == false)
+      {
+         cout << seats.at(i) << endl;
+      }
+   }
+}
+
+
+
+//Function should take in a seat from user and mark that seat as unavailable
+void BookSeat(const string &userSeat, const vector<string> &seats, vector<bool> &status)
+{
+   for(unsigned int i = 0; i < seats.size(); ++i)
+   {
+      if(userSeat == seats.at(i))
+      {
+           
+            
+               status.at(i) = true;
+            
+         
+      }
+   }
+   cout << "Seat\tStatus" << endl;
+   for(unsigned int i = 0; i < seats.size(); ++i)
+   {
+      cout << seats.at(i) << '\t' << status.at(i) << endl;
+   }
+}
+
+//Function should take in a seat from user and mark that seat as available
+void CancelSeat (const string &userSeat, const vector<string> &seats, vector<bool> &status)
+{
+ for(unsigned int i = 0; i < seats.size(); ++i)
+   {
+      if(userSeat == seats.at(i))
+      {
+         status.at(i) = false;
+      }
+   }
+   cout << "Seat\tStatus" << endl;
+   for(unsigned int i = 0; i < seats.size(); ++i)
+   {
+      cout << seats.at(i) << '\t' << status.at(i) << endl;
+   }
+}
+
+//Function should take in two seats from the user.  It should mark the first seat as available and 
+//the second seat as unavailable
+void ChangeSeat(const string &userSeat1, const string &userSeat2, const vector<string> &seats, vector<bool> &status)
+{
+   for(unsigned int i = 0; i < seats.size(); ++i)
+   {
+      if(userSeat1 == seats.at(i))
+      {
+         status.at(i) = false;
+      }
+      else if(userSeat2 == seats.at(i))
+      {
+         status.at(i) = true;
+      }
+   
+   }
+   cout << "Seat\tStatus" << endl;
+      for(unsigned int i = 0; i < seats.size(); ++i)
+   {
+      cout << seats.at(i) << '\t' << status.at(i) << endl;
+   }
+}
+
+//add other functions you might need here
+
+int main() {
+   string userSeat1;
+   string userSeat2; 
+   vector<string> seats(25);
+   vector<bool> status(25);
+   string userSeat;
+   string menuChoice;
+   
+   seats.at(0) = "1A";
+   seats.at(1) = "1B";
+   seats.at(2) = "1C";
+   seats.at(3) = "1D";
+   seats.at(4) = "1E";
+   seats.at(5) = "2A";
+   seats.at(6) = "2B";
+   seats.at(7) = "2C";
+   seats.at(8) = "2D";
+   seats.at(9) = "2E";
+   seats.at(10) = "3A";
+   seats.at(11) = "3B";
+   seats.at(12) = "3C";
+   seats.at(13) = "3D";
+   seats.at(14) = "3E";
+   seats.at(15) = "4A";
+   seats.at(16) = "4B";
+   seats.at(17) = "4C";
+   seats.at(18) = "4D";
+   seats.at(19) = "4E";
+   seats.at(20) = "5A";
+   seats.at(21) = "5B";
+   seats.at(22) = "5C";
+   seats.at(23) = "5D";
+   seats.at(24) = "5E";
+   
+  
+   
+   DisplayMenu();
+   cin >> menuChoice;
+   cout << endl;
+   
+   while(menuChoice != "7")
+   {
+      if(menuChoice == "1")
+      {
+          DisplayAllSeatsStatus(seats, status);
+         cout << endl;
+      }
+      else if(menuChoice == "2")
+      {
+         cout << "Number of available seats: " << TotalNumberOfAvailableSeats(status) << endl << endl;
+      }
+      else if (menuChoice == "3") 
+      {
+         DisplayAvailableSeats(seats, status);
+         cout << endl;
+      }
+      else if (menuChoice == "4" )
+      {
+        cout << "Enter seat to book: " << endl << endl;
+        cin >> userSeat;
+        for(unsigned int i = 0; i < seats.size(); ++i)
+         {
+            if(userSeat == seats.at(i))
+               {
+                  if(status.at(i) == true)
+                     {
+                        cout << "That seat is already taken." << endl << "Enter seat to book: " << endl << endl;
+                        cin >> userSeat;
+                     }
+               }
+         }
+         BookSeat(userSeat, seats, status);
+         cout << endl;
+      }
+      else if (menuChoice == "5" )
+      {
+        cout << "Enter seat to cancel: " << endl << endl;
+         cin >> userSeat;
+         CancelSeat (userSeat, seats, status);
+         cout << endl;
+      }
+      else if (menuChoice == "6" )
+      {
+         cout << "Enter seat to cancel: " << endl << endl << "Enter seat to book: " << endl << endl;
+         cin >> userSeat1 >> userSeat2;
+         ChangeSeat(userSeat1, userSeat2, seats, status);
+         cout << endl;
+      }
+
+      DisplayMenu();
+      cout << endl;
+      cin >> menuChoice;
+   }
+
+   return 0;
+}
