@@ -1,0 +1,105 @@
+from random_word import RandomWords #need to install random-word for this
+
+def build_pole():
+    print("-------")
+    print("|     |")
+    print("|", "|", "|", "|", sep= "\n")
+
+def pole_w_head():
+    print("-------")
+    print("|     |")
+    print("|     O", "|", "|", "|", sep= "\n")
+
+def pole_w_body():
+    print("-------")
+    print("|     |")
+    print("|     O", "|     |", "|", "|", sep= "\n")
+
+def pole_w_leftarm():
+    print("-------")
+    print("|     |")
+    print("|     O", "|    /|", "|", "|", sep= "\n")
+
+def pole_w_botharms():
+    print("-------")
+    print("|     |")
+    print("|     O", "|    /|\\", "|", "|", sep= "\n")
+
+def pole_w_leftleg():
+    print("-------")
+    print("|     |")
+    print("|     O", "|    /|\\", sep= "\n")
+    print("|    /")
+
+def pole_w_bothlegs():
+    print("-------")
+    print("|     |")
+    print("|     O", "|    /|\\", sep= "\n")
+    print("|     /\\")
+
+def get_guess(usedletters):
+    while True:
+        guess = input("guess a letter(all lowercase):")
+        if len(guess) != 1 or not guess.isalpha() or not guess.islower():
+            print("Enter ONE LOWERCASE letter only.")
+        elif guess in usedletters:
+            print("You already guessed that letter.")
+        else:
+            return guess
+
+def user_guesses(user, answer):
+    isLetter = False
+    letterIsAt = []
+    for x in range(0, len(answer)):
+        if(user == answer[x]):
+            isLetter = True
+            letterIsAt.append(x)
+        else:
+            continue
+    if isLetter == True:
+        return letterIsAt
+    else:
+        return None
+            
+
+
+wordbank = RandomWords()
+answer = wordbank.get_random_word()
+while not answer or not answer.isalpha():
+    answer = wordbank.get_random_word()
+answer = answer.lower()
+amountwrong = 0
+wordguessed = False
+uncovered = ["_"] * len(answer)
+usedletters = []
+
+build_pole()
+print("word:", end="")
+print(" ".join(uncovered))
+print()
+
+poles = [build_pole, pole_w_head, pole_w_body, pole_w_leftarm, pole_w_botharms, pole_w_leftleg, pole_w_bothlegs]
+while amountwrong < len(poles) - 1 and not wordguessed:
+    user = get_guess(usedletters)
+    usedletters.append(user)
+    result = user_guesses(user, answer)
+    if result is not None:
+        for x in result:
+            uncovered[x] = user
+        poles[amountwrong]()
+        print(f"letter is in word: {' '.join(uncovered)}")
+    else:
+        amountwrong += 1
+        poles[amountwrong]()
+        print(f"letter is not in word: {' '.join(uncovered)}")
+    if "_" not in  uncovered:
+        wordguessed = True
+        break
+
+
+
+
+if wordguessed == True:
+    print("GAME OVER!!! YOU WON!!! CONGRATS!!! 🎉")
+else:
+    print(f"GAME OVER!!! YOU LOST!!!😢 THE WORD WAS {answer}")
